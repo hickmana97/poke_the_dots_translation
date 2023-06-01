@@ -1,3 +1,7 @@
+/* Poke the dots is a game where two coloured dots bounce around the 
+screen. The aim is to go as long as possible without them colliding.
+Left clicking will randomise the dot locations*/
+
 let bigDot
 let smallDot
 let continueGame
