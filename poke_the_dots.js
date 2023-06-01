@@ -1,28 +1,59 @@
+let bigDot
+let smallDot
 
 
 function setup(){
   createCanvas(500, 400);
-  background('black');
   frameRate(90);
+  bigDot = new Dots('blue', 100, 100, 40, 2, 1)
+  smallDot = new Dots('red', 200, 200, 30, 1, 2)
   
 }
 
 function draw(){
-  stroke(bigDot[0])
-  strokeWeight(bigDot[2] * 2)
-  point(bigDot[1][0], bigDot[1][1])
-  stroke(smallDot[0])
-  strokeWeight(smallDot[2] * 2)
-  point(smallDot[1][0], smallDot[1][0])
+  background('black');
+  bigDot.update();
+  bigDot.checkCollision();
+  bigDot.move();
+  smallDot.update();
+  smallDot.checkCollision();
+  smallDot.move();
+  
 }
 
-let bigDot = ['blue', [100,100], 40, [2,1]]
-let smallDot = ['red', [200,200], 30, [1,2]]
 
-function moveDots(coords, velocity){
-  for(let coordinate of coords){
-    i = 0
-    coordinate = coordinate + velocity[i];
-    i = i + 1
+
+class Dots{
+  constructor(colour, xpos, ypos, size, xspeed, yspeed){
+    this.colour = colour
+    this.xpos = xpos
+    this.ypos = ypos
+    this.size = size
+    this.xspeed = xspeed
+    this.yspeed = yspeed
+  }
+  
+  move(){
+    this.xpos = this.xpos + this.xspeed
+    this.ypos = this.ypos + this.yspeed
+    
+  }
+  
+  update(){
+    strokeWeight(this.size *2)
+    stroke(this.colour)
+    point(this.xpos, this.ypos)
+  
+  }
+  
+  checkCollision(){
+    if (this.xpos < this.size || this.xpos > width - this.size){
+      this.xspeed = - this.xspeed
     }
+    
+    if (this.ypos < this.size ||this.ypos > height - this.size){
+      this.yspeed = - this.yspeed
+    }
+  }
+    
 }
