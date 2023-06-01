@@ -1,10 +1,12 @@
 /* Poke the dots is a game where two coloured dots bounce around the 
 screen. The aim is to go as long as possible without them colliding.
-Left clicking will randomise the dot locations*/
+Left clicking will randomise the dot locations.
+Game can be restarted on game over with left click*/
 
 let bigDot
 let smallDot
 let continueGame
+let restartGame
 
 
 function setup(){
@@ -13,7 +15,9 @@ function setup(){
   textFont('Arial')
   bigDot = new Dots('blue', 40, 2, 1)
   smallDot = new Dots('red', 30, 1, 2)
+  savedTime = millis()
   continueGame = true
+  restartGame = false
   game = new Game()
 }
 
@@ -51,7 +55,8 @@ class Game{
   }
   
   scoreIncrement(){
-    this.score = floor(millis() / 1000)
+    let passedTime = millis() - savedTime
+    this.score = floor(passedTime/ 1000)
     return this.score
   }
   
@@ -59,6 +64,13 @@ class Game{
     if(continueGame == false){
       this.gameOver()
       noLoop()
+    }
+    if(restartGame == true){
+      continueGame = true
+      restartGame = false
+      savedTime = millis()
+      this.score = 0
+      loop()
     }
   }
   
@@ -133,5 +145,9 @@ class Dots{
 function mouseClicked(){
   bigDot.randomise()
   smallDot.randomise()
+  if(continueGame == false){
+    restartGame = true
+    game.checkContinue()
+  }
 }
  
