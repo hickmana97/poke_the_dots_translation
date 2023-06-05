@@ -7,15 +7,19 @@ let bigDot
 let smallDot
 let continueGame
 let restartGame
-
+let dots = []
 
 function setup(){
   createCanvas(500, 400);
   frameRate(90);
   textFont('Arial')
   bigDot = new Dots('blue', 40, 2, 1)
+  dots.push(bigDot)
   smallDot = new Dots('red', 30, 1, 2)
-  bigDot.checkPositions()
+  dots.push(smallDot)
+  for(const dot of dots){
+    dot.checkPositions()
+  }
   savedTime = millis()
   continueGame = true
   restartGame = false
@@ -36,12 +40,12 @@ class Game{
   }
   
   play(){
-    bigDot.update()
-    bigDot.checkCollision()
-    bigDot.move()
-    smallDot.update()
-    smallDot.checkCollision()
-    smallDot.move()
+    for(const dot of dots){
+      dot.update()
+      dot.checkCollision()
+      dot.move()
+    }
+    
     this.updateScore()
     this.checkContinue()
   }
@@ -127,62 +131,39 @@ class Dots{
       this.yspeed = - this.yspeed
     }
     //check dots collision with each other, if true end loop
-    let distance = sqrt(sq(bigDot.xpos - smallDot.xpos) + sq(bigDot.ypos - smallDot.ypos))
+    let distance = this.calcDistance()
     if(distance <= bigDot.size + smallDot.size){
       continueGame = false
     }
 
   }
   
+  calcDistance(){
+    let distance = sqrt(sq(bigDot.xpos - smallDot.xpos) + sq(bigDot.ypos - smallDot.ypos))
+    return distance
+  }
+  
   randomise(){
     this.xpos = random(50, 450)
     this.ypos = random(50, 350)
-    this.checkPositions()
     return this.xpos
     return this.ypos
   }
   
   checkPositions(){
-    let checkBigX = {
-      get position(){
-        return bigDot.xpos
-      }
-    }
-    let checkSmallX = {
-      get position(){
-        return smallDot.xpos
-      }
-    }
-    let checkBigY = {
-      get position(){
-        return bigDot.ypos
-      }
-    }
-    let checkSmallY = {
-      get position(){
-        return smallDot.ypos
-      }
-    }
-    let checkBigSize = {
-      get size(){
-        return bigDot.size
-      }
-    }
-    let checkSmallSize = {
-      get size(){
-        return smallDot.size
-      }
-    }
-    let distance = sqrt(sq(checkBigX - checkSmallX) + sq(checkBigY - checkSmallY))
-    if(distance <= checkBigSize + checkSmallSize){
-      randomise()
+    let distance = this.calcDistance()
+    if(distance <= bigDot.size + smallDot.size){
+      this.randomise()
     } 
+    
   }
 }
 
 function mouseClicked(){
-  bigDot.randomise()
-  smallDot.randomise()
+  for(const dot of dots){
+    dot.randomise()
+    dot.checkPositions()
+  }
   if(continueGame == false){
     restartGame = true
     game.checkContinue()
@@ -190,13 +171,5 @@ function mouseClicked(){
   
 }
 
-/*function checkPositions(){
-    let checkBigX = {
-      get position(){
-        return bigDot.xpos
-      }
-    }
-    console.log(checkBigX)
-}*/
 
  
