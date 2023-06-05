@@ -15,6 +15,7 @@ function setup(){
   textFont('Arial')
   bigDot = new Dots('blue', 40, 2, 1)
   smallDot = new Dots('red', 30, 1, 2)
+  bigDot.checkPositions()
   savedTime = millis()
   continueGame = true
   restartGame = false
@@ -139,6 +140,22 @@ class Dots{
     return this.xpos
     return this.ypos
   }
+  
+  checkPositions(){
+    let checkBigX = {
+      get position(){
+        return bigDot.xpos
+      }
+    }
+    let checkSmallX = {
+      get position(){
+        return smallDot.xpos
+      }
+    }
+    if(checkBigX <= checkSmallX + 40 & checkBigX >= checkSmallX - 40){
+      randomise()
+    }
+  }
     
 }
 
@@ -150,4 +167,12 @@ function mouseClicked(){
     game.checkContinue()
   }
 }
- 
+
+/*function checkPositions(){
+    let checkBigX = {
+      get position(){
+        return bigDot.xpos
+      }
+    }
+    console.log(checkBigX)
+}*/
