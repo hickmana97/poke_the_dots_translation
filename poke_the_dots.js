@@ -137,6 +137,7 @@ class Dots{
   randomise(){
     this.xpos = random(50, 450)
     this.ypos = random(50, 350)
+    this.checkPositions()
     return this.xpos
     return this.ypos
   }
@@ -152,11 +153,31 @@ class Dots{
         return smallDot.xpos
       }
     }
-    if(checkBigX <= checkSmallX + 40 & checkBigX >= checkSmallX - 40){
-      randomise()
+    let checkBigY = {
+      get position(){
+        return bigDot.ypos
+      }
     }
+    let checkSmallY = {
+      get position(){
+        return smallDot.ypos
+      }
+    }
+    let checkBigSize = {
+      get size(){
+        return bigDot.size
+      }
+    }
+    let checkSmallSize = {
+      get size(){
+        return smallDot.size
+      }
+    }
+    let distance = sqrt(sq(checkBigX - checkSmallX) + sq(checkBigY - checkSmallY))
+    if(distance <= checkBigSize + checkSmallSize){
+      randomise()
+    } 
   }
-    
 }
 
 function mouseClicked(){
@@ -166,6 +187,7 @@ function mouseClicked(){
     restartGame = true
     game.checkContinue()
   }
+  
 }
 
 /*function checkPositions(){
@@ -176,3 +198,5 @@ function mouseClicked(){
     }
     console.log(checkBigX)
 }*/
+
+ 
