@@ -75,6 +75,10 @@ class Game{
       restartGame = false
       savedTime = millis()
       this.score = 0
+      bigDot.xspeed = 2
+      bigDot.yspeed = 1
+      smallDot.xspeed = 1
+      smallDot.yspeed = 2
       loop()
     }
   }
@@ -125,10 +129,22 @@ class Dots{
   checkCollision(){
     if (this.xpos < this.size || this.xpos > width - this.size){
       this.xspeed = - this.xspeed
+      if(this.xspeed > 0){
+        this.xspeed += 0.1
+      }
+      if(this.xspeed < 0){
+        this.xspeed -= 0.1
+      }
     }
     
     if (this.ypos < this.size ||this.ypos > height - this.size){
       this.yspeed = - this.yspeed
+      if(this.yspeed > 0){
+        this.yspeed += 0.1
+      }
+      if(this.yspeed < 0){
+        this.yspeed -= 0.1
+      }
     }
     //check dots collision with each other, if true end loop
     let distance = this.calcDistance()
